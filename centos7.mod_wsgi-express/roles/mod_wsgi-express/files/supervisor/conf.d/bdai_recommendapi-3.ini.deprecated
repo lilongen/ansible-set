@@ -1,0 +1,4 @@
+[program:bdai_recommendapi-3]
+command=/usr/local/bin/mod_wsgi-express start-server --server-root /data/www/wsgi.run/ws-3/bdai_recommendapi --host 0.0.0.0 --port 9003 --user apache app.py
+directory=/data/www/wsgi/ws-3/bdai_recommendapi
+environment=prometheus_multiproc_dir="/data/www/prometheus/ws-3"

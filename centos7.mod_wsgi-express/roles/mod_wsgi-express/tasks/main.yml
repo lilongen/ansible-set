@@ -1,0 +1,82 @@
+---
+- name: yum install packages
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - dstat
+      - htop
+      - tree
+      - rsync
+      - python36
+      - python36-devel
+      - expat-devel
+      - mariadb-devel
+      - mariadb-libs
+  notify:
+    - echo uptime
+
+- name: python36 pip install
+  command: "{{ item }}"
+  with_items:
+    - python3.6 -m ensurepip
+
+- name: link python36, python36-pip
+  file:
+    src: /usr/bin/python36
+    dest: /usr/bin/python3
+    state: link
+  file: 
+    src: /usr/local/bin/pip3.6
+    dest: /usr/bin/pip3
+    state: link
+
+- name: pip install things
+  command: "{{ item }}"
+  with_items:
+    - pip3 install --upgrade pip
+    - pip3 install supervisor
+    - pip3 install mod_wsgi-httpd
+    - pip3 install mod_wsgi
+  notify:
+    - echo uptime
+
+- name: copy supervisor conf file
+  copy:
+    src: files/supervisor
+    dest: /etc/
+
+- name: copy supervisord.service
+  copy:
+    src: files/supervisord.service
+    dest: /etc/systemd/system/supervisord.service
+
+- name: copy pip.conf
+  copy:
+    src: files/.pip
+    dest: /root/
+
+- name: systemctl daemon-reload
+  command: "{{ item }}"
+  with_items:
+    - systemctl daemon-reload
+
+- name: enable and start supervisord
+  systemd:
+    name: supervisord
+    daemon_reload: yes
+    enabled: yes
+    state: reloaded
+
+- name: adduser apache
+  user:
+    name: apache
+    state: present
+    
+- name: www, wsgi, prometheus directory
+  shell: |
+    mkdir -p /data/www/{wsgi,wsgi.run,prometheus}/{ws-1,ws-2,ws-3,ws-4}
+    chown -R apache:apache /data/www
+  args:
+    executable: /bin/bash

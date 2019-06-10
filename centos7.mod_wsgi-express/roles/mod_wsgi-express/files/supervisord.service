@@ -1,0 +1,13 @@
+[Unit]
+Description=Supervisor Daemon
+After=network.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf
+KillMode=process
+KillSignal=SIGINT
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
