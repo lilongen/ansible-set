@@ -22,8 +22,11 @@
 
 - name: Check if {{ miniconda_location }} already present
   command: test -d {{ miniconda_location }}
-  register: result
-  failed_when: result.rc == 0
+  register: test_miniconda_location
+
+- name: End the play for hosts that miniconda already present
+  meta: end_play
+  when: test_miniconda_location.rc == 0
 
 - name: install miniconda
   expect:
@@ -36,3 +39,4 @@
       '\[/root/miniconda3\] >>> ': "{{ miniconda_location }}"
       'by running conda init\? \[yes\|no\](.*)\[no\] >>> ': 'yes'
     echo: yes
+    notify: echo uptime
