@@ -1,0 +1,3 @@
+name: e.py36
+dependencies:
+  - python=3.6

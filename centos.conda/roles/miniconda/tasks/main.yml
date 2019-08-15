@@ -1,0 +1,43 @@
+---
+- name: Deploy pip.conf
+  copy:
+    src: files/.pip
+    dest: /root/
+
+- name: install pexpect
+  pip:
+    name: pexpect
+
+- name: Assure {{ workspace }} present
+  file:
+    path: "{{ workspace }}"
+    state: directory
+    mode: '0755'
+
+- name: copy conda environment definition file
+  copy:
+    src: files/e.py36.yml
+    dest: "{{ workspace }}"
+
+- name: copy miniconda setup package
+  copy:
+    src: files/Miniconda3-latest-Linux-x86_64.sh
+    dest: "{{ workspace }}"
+    mode: '0755'
+
+- name: Check if {{ miniconda_location }} already present
+  command: test -d {{ miniconda_location }}
+  register: result
+  failed_when: result.rc == 0
+
+- name: install miniconda
+  expect:
+    chdir: "{{ workspace }}"
+    command: ./Miniconda3-latest-Linux-x86_64.sh
+    responses:
+      'Please, press ENTER to continue.*>>> ': '' 
+      '(.*)--More--(.*)': ' '
+      'Do you accept the license terms\? \[yes\|no\](.*)\[no\] >>> ': 'yes'
+      '\[/root/miniconda3\] >>> ': "{{ miniconda_location }}"
+      'by running conda init\? \[yes\|no\](.*)\[no\] >>> ': 'yes'
+    echo: yes
