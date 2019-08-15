@@ -14,11 +14,6 @@
     state: directory
     mode: '0755'
 
-- name: copy conda environment definition file
-  copy:
-    src: files/e.py36.yml
-    dest: "{{ workspace }}"
-
 - name: copy miniconda setup package
   copy:
     src: files/Miniconda3-latest-Linux-x86_64.sh
