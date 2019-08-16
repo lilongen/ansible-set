@@ -1,4 +1,12 @@
 ---
+- name: yum install packages
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - python-pip
+
 - name: Deploy pip.conf
   copy:
     src: files/.pip
@@ -20,9 +28,10 @@
     dest: "{{ workspace }}"
     mode: '0755'
 
-- name: if {{ miniconda_location }} already present
-  command: test -d {{ miniconda_location }}
+- name: if miniconda already present
+  command: test -f {{ miniconda_location }}/bin/conda
   register: test_miniconda_location
+  ignore_errors: yes
 
 - name: End the play for hosts that miniconda already present
   meta: end_host
@@ -39,4 +48,3 @@
       '\[/root/miniconda3\] >>> ': "{{ miniconda_location }}"
       'by running conda init\? \[yes\|no\](.*)\[no\] >>> ': 'yes'
     echo: yes
-    notify: echo uptime
