@@ -20,12 +20,12 @@
     dest: "{{ workspace }}"
     mode: '0755'
 
-- name: Check if {{ miniconda_location }} already present
+- name: if {{ miniconda_location }} already present
   command: test -d {{ miniconda_location }}
   register: test_miniconda_location
 
 - name: End the play for hosts that miniconda already present
-  meta: end_play
+  meta: end_host
   when: test_miniconda_location.rc == 0
 
 - name: install miniconda
