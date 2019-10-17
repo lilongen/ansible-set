@@ -13,7 +13,7 @@
     state: present
   vars:
     packages:
-      - tmux2u
+      - tmux2
 
 - name: Deploy ".tmux.conf"
   copy:
