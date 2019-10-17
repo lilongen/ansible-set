@@ -1,0 +1,21 @@
+---
+- name: yum install IUS repo, IUS is a yum repository that provides newer versions of select software for RHEL and CentOS 
+  shell: |
+    yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    yum install -y https://repo.ius.io/ius-release-el7.rpm 
+  args:
+    executable: /bin/bash
+  ignore_errors: yes
+
+- name: yum install packages - tmux
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - tmux2u
+
+- name: Deploy ".tmux.conf"
+  copy:
+    src: files/.tmux.conf
+    dest: /root/
