@@ -1,1 +1,1 @@
-/Users/lilongen/Downloads/Miniconda3-latest-Linux-x86_64.sh
+/Users/lilongen/software/Miniconda3-latest-Linux-x86_64.sh
