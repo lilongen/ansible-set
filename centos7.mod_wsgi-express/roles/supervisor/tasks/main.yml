@@ -1,0 +1,71 @@
+---
+
+
+- name: make /etc/supervisor/conf.d directory
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/supervisor/conf.d/example
+    
+- name: render supervisord.service to remote 
+  template:
+    src: supervisord.service 
+    dest: /etc/systemd/system/supervisord.service
+
+- name: render bdai_exampleapi-1.ini to remote 
+  template:
+    src: supervisor/conf.d/example/bdai_exampleapi-1.ini
+    dest: /etc/supervisor/conf.d/example/bdai_exampleapi-1.ini
+
+- name: render bdai_exampleapi-2.ini to remote 
+  template:
+    src: supervisor/conf.d/example/bdai_exampleapi-2.ini
+    dest: /etc/supervisor/conf.d/example/bdai_exampleapi-2.ini
+
+- name: render bdai_exampleapi-3.ini to remote 
+  template:
+    src: supervisor/conf.d/example/bdai_exampleapi-3.ini
+    dest: /etc/supervisor/conf.d/example/bdai_exampleapi-3.ini
+
+- name: render bdai_exampleapi-4.ini to remote 
+  template:
+    src: supervisor/conf.d/example/bdai_exampleapi-4.ini
+    dest: /etc/supervisor/conf.d/example/bdai_exampleapi-4.ini
+
+- name: render bdai_exampleapi.ini to remote 
+  template:
+    src: supervisor/conf.d/example/bdai_exampleapi.ini
+    dest: /etc/supervisor/conf.d/example/bdai_exampleapi.ini
+
+- name: copy pip.conf
+  copy:
+    src: files/.pip
+    dest: /root/
+
+- name: systemctl daemon-reload
+  command: "{{ item }}"
+  with_items:
+    - systemctl daemon-reload
+
+- name: enable and start supervisord
+  systemd:
+    name: supervisord
+    daemon_reload: yes
+    enabled: yes
+    state: reloaded
+
+- name: adduser apache
+  user:
+    name: apache
+    state: present
+    
+- name: www, wsgi, prometheus directory
+  shell: |
+    mkdir -p {{ wsgi_app_location }}/{ws-1,ws-2,ws-3,ws-4}
+    mkdir -p {{ prometheus_data_location }}/{ws-1,ws-2,ws-3,ws-4}
+    chown -R apache:apache {{ wsgi_app_location }}/{ws-1,ws-2,ws-3,ws-4}
+    chown -R apache:apache {{ prometheus_data_location }}/{ws-1,ws-2,ws-3,ws-4}
+
+  args:
+    executable: /bin/bash

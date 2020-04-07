@@ -1,4 +1,7 @@
 ---
 python: /data/miniconda3/bin/python
-pip: /data/miniconda3/bin/python
+pip: /data/miniconda3/bin/pip
 supervisord: /data/miniconda3/bin/supervisord
+mod_wsgi_express: /data/miniconda3/bin/mod_wsgi-express
+wsgi_app_location: /data/wsgi
+prometheus_data_location: /data/prometheus/
