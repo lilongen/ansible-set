@@ -4,7 +4,7 @@ After=network.target network-online.target
 
 [Service]
 Type=simple
-ExecStart={{mod_wsgi_express}} -c /etc/supervisor/supervisord.conf
+ExecStart=/usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf
 KillMode=process
 KillSignal=SIGINT
 Restart=on-failure
