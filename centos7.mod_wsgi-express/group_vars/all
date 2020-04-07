@@ -1,3 +1,4 @@
 ---
 python: /data/miniconda3/bin/python
 pip: /data/miniconda3/bin/python
+supervisord: /data/miniconda3/bin/supervisord
