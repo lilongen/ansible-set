@@ -1,3 +1,4 @@
 ---
 workspace: /data/tmp
 miniconda_location: /data/miniconda3
+run_conda_init: yes
