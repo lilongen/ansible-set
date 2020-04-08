@@ -1,24 +1,7 @@
 ---
-- name: yum install packages
-  yum:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-      - dstat
-      - htop
-      - tree
-      - rsync
-      - expat-devel
-      - mariadb-devel
-      - mariadb-libs
-  notify:
-    - echo uptime
-
 - name: pip install things
   command: "{{ item }}"
   with_items:
-    -  "{{ pip }} install supervisor"
     -  "{{ pip }} install mod_wsgi-httpd"
     -  "{{ pip }} install mod_wsgi"
   notify:

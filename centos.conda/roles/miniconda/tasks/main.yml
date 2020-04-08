@@ -46,5 +46,5 @@
       '(.*)--More--(.*)': ' '
       'Do you accept the license terms\? \[yes\|no\](.*)\[no\] >>> ': 'yes'
       '\[/root/miniconda3\] >>> ': "{{ miniconda_location }}"
-      'by running conda init\? \[yes\|no\](.*)\[no\] >>> ': "{{ run_conda_init }}"
+      'by running conda init\? \[yes\|no\](.*)\[no\] >>> ': 'yes'
     echo: yes
